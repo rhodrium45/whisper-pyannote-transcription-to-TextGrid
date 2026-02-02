@@ -37,12 +37,11 @@ class MEET_Transcription_pipeline():
 
         headers = {"Authorization": f"Bearer {self.api_key}", "Content-Type": "application/json"}
 
-        if num_speakers:
+        if num_speakers == "unknown":
             payload = {
                     "url": f"media://{self.session_name}",
                     "webhook": "https://example.com/webhook",
                     "model": "precision-2",
-                    "numSpeakers": num_speakers,
                     "turnLevelConfidence": False,
                     "exclusive": False,
                     "confidence": False,
@@ -53,6 +52,7 @@ class MEET_Transcription_pipeline():
                     "url": f"media://{self.session_name}",
                     "webhook": "https://example.com/webhook",
                     "model": "precision-2",
+                    "numSpeakers": int(num_speakers),
                     "turnLevelConfidence": False,
                     "exclusive": False,
                     "confidence": False,
