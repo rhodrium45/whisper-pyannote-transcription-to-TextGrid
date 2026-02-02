@@ -13,13 +13,17 @@ In order to run this, you will need access to the precision-2 model. This requir
 
 ## How to Run
 
-1. First you must upload the audio file to the Pyannote API. To do this, make sure you have python installed and run the following:
+1. Make sure you have python installed and install the required packages with:
+```bash
+pip install -r requirements.txt
+``` 
+2. Next, you must upload the audio file to the Pyannote API. To do this, run the following:
 ```bash
 python upload_audio.py <audio_file_path.wav> <pyannote_api_key>
 ```
 Replace <audio_file_path.wav> with the path to the audio file you would like to transcribe, and replace <pyannote_api_key> with your API key you made in the preliminary setup.
 
-2. Run the following:
+3. Run the following:
 ```bash
 python MEET_transcription_pipeline.py <audio_file_path.wav> <whisper_model_type> <pyannote_api_key> <num_speakers>
 ```
@@ -36,7 +40,7 @@ python MEET_transcription_pipeline.py audio_files/audio.wav large 123456 3
 It may take a few minutes for the whisper transcription to run. Upon completion, a .txt file with the job ID for this pyannote diarization job will be created.
 A TextGrid file is also created with the diarizaed transcription. This file is called "diarized_precision2_<file_name>.TextGrid"
 
-3. If you want to run the script on the same audio file again, you can use the same pyannote API job as before.
+4. If you want to run the script on the same audio file again, you can use the same pyannote API job as before.
 Simply take the job ID that was saved in job_IDs.txt and add it as an argument in the same command:
 ```bash
 python MEET_transcription_pipeline.py <audio_file_path.wav> <whisper_model_type> <pyannote_api_key> <num_speakers> <job_DI>
