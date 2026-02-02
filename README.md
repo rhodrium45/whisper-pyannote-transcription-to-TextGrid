@@ -1,5 +1,5 @@
 Converts audio files (.wav, .mp3, .mp4) into a diarized Praat Textgrid using transcription from Whisper and diarization from Pyannote. 
-This script was originally written to serve as a transcription pipeline for the MEET corpus created at KTH Royal Insitute of Technology.
+This script was originally written to serve as a transcription pipeline for the MEET corpus created at KTH Royal Institute of Technology.
 
 In order to run this, you will need access to the precision-2 model. This requires a premium subscription to Pyannote, but as of February 2026 there is a free trial available for 1 month.
 
@@ -8,7 +8,7 @@ In order to run this, you will need access to the precision-2 model. This requir
 ## Preliminary Setup
 
 1. Download the repository and import the necessary packages
-2. Create an account with Pyannote if you don't already have one and either start a free trial or buy a package that allows you access to their precision-2 model.
+2. Create an account with Pyannote (here: https://www.pyannote.ai/) if you don't already have one and either start a free trial or buy a package that allows you access to their precision-2 model.
 3. Create a Pyannote API token and save it somewhere
 
 ## How to Run
