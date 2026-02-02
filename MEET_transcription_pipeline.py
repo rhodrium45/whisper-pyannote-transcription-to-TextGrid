@@ -7,7 +7,7 @@ import pandas as pd
 import time
 from collections import defaultdict
 
-"""Run code in the format: script.py file_path model_type pyannote_key job_id. job_id can be omitted if you want to 
+"""Run code in the format: script.py file_path model_type pyannote_key num_speakers job_id. job_id can be omitted if you want to 
 create a job."""
 
 class MEET_Transcription_pipeline():
@@ -32,20 +32,32 @@ class MEET_Transcription_pipeline():
         self.segments = result["segments"]
         self.audio_duration = self.segments[-1]["end"]
 
-    def create_diarization_job(self):
+    def create_diarization_job(self, num_speakers):
         url = "https://api.pyannote.ai/v1/diarize"
 
         headers = {"Authorization": f"Bearer {self.api_key}", "Content-Type": "application/json"}
-        payload = {
-                "url": f"media://{self.session_name}",
-                "webhook": "https://example.com/webhook",
-                "model": "precision-2",
-                "numSpeakers": 3,
-                "turnLevelConfidence": False,
-                "exclusive": False,
-                "confidence": False,
-                "transcription": False
-        }
+
+        if num_speakers:
+            payload = {
+                    "url": f"media://{self.session_name}",
+                    "webhook": "https://example.com/webhook",
+                    "model": "precision-2",
+                    "numSpeakers": num_speakers,
+                    "turnLevelConfidence": False,
+                    "exclusive": False,
+                    "confidence": False,
+                    "transcription": False
+            }
+        else:
+            payload = {
+                    "url": f"media://{self.session_name}",
+                    "webhook": "https://example.com/webhook",
+                    "model": "precision-2",
+                    "turnLevelConfidence": False,
+                    "exclusive": False,
+                    "confidence": False,
+                    "transcription": False
+            }
 
         response = requests.post(url, headers=headers, json=payload)
 
@@ -83,12 +95,8 @@ class MEET_Transcription_pipeline():
     
     def align_outputs(self):
 
-        # Assuming diarization_segments is a list of dictionaries from Step 1
-        # Example: diarization_segments = [{"start": 0.5, "end": 3.2, "speaker": "SPEAKER_00"}, ...]
         diarize_df = pd.DataFrame(self.diarization)
 
-        # Assuming transcript_result is a dictionary from Step 2
-        # Example: transcript_result = {"segments": [{"start": 0.0, "end": 5.2, "text": "..."}, ...]}
         word_segments = []
         for sentence in self.segments:
             for word in sentence["words"]:
@@ -226,11 +234,11 @@ def main():
     M.whisper_transcription()
 
     try:
-        job_id = sys.argv[4]
+        job_id = sys.argv[5]
         created_job = False
     except IndexError:
         print("Creating job...")
-        job_id = M.create_diarization_job()
+        job_id = M.create_diarization_job(sys.argv[4])
         created_job = True
 
     print("Polling diarization...")
